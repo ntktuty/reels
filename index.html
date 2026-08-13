@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>NTK ரீல்ஸ் — நாம் தமிழர் கட்சி</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Tamil:wght@600;800;900&family=Noto+Sans+Tamil:wght@400;500;600;700;800&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#B31217; --red-dark:#7A0C10; --red-deeper:#4E0709;
+  --ink:#1A1512; --cream:#FBF3E7; --cream-2:#F3E6D3;
+  --gold:#D6A419; --gold-2:#F0C94A;
+  --green:#1F6E52; --green-bg:#E4F2EC;
+  --grey:#6B6058; --line:#E4D6C0; --white:#fff;
+  --shadow:0 8px 24px rgba(74,10,10,.14);
+  --radius:16px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Noto Sans Tamil','Noto Sans',sans-serif;
+  background:radial-gradient(1200px 400px at 10% -10%, #f7e6c9 0%, transparent 60%), var(--cream);
+  color:var(--ink); min-height:100vh; padding-bottom:96px;
+  -webkit-tap-highlight-color:transparent;
+}
+h1,h2,h3,.display{font-family:'Noto Serif Tamil','Noto Serif',serif;}
+button{font-family:inherit;cursor:pointer;}
+input,select,textarea{font-family:inherit;}
+a{color:var(--red-dark);}
+::selection{background:var(--gold-2);}
+
+/* ===== Header ===== */
+.topbar{
+  background:linear-gradient(160deg,var(--red) 0%,var(--red-dark) 45%,var(--red-deeper) 100%);
+  color:var(--cream); padding:18px 16px 22px; position:relative; overflow:hidden;
+}
+.topbar::before{content:"";position:absolute;inset:0;background-image:radial-gradient(circle, rgba(255,255,255,.07) 1.5px, transparent 1.5px);background-size:16px 16px;opacity:.5;}
+.topbar::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:linear-gradient(90deg,var(--gold) 0%,var(--gold-2) 50%,var(--gold) 100%);}
+.topbar-inner{position:relative;max-width:720px;margin:0 auto;display:flex;align-items:center;gap:10px;}
+.brand-mark{width:38px;height:38px;border-radius:10px;background:linear-gradient(160deg,var(--gold-2),var(--gold));display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;box-shadow:0 3px 8px rgba(0,0,0,.25);}
+.brand-title{font-size:1.2rem;font-weight:900;margin:0;letter-spacing:.2px;}
+.brand-sub{margin:1px 0 0;font-size:.72rem;opacity:.85;font-weight:600;}
+.hdr-btn{margin-left:auto;background:rgba(255,255,255,.14);border:1px solid rgba(255,215,120,.4);color:var(--cream);border-radius:10px;padding:8px 10px;font-size:1rem;line-height:1;}
+.who{position:relative;max-width:720px;margin:12px auto 0;font-size:.76rem;opacity:.9;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.who b{font-weight:800;}
+.who .switch{background:none;border:none;color:var(--gold-2);text-decoration:underline;font-size:.76rem;padding:0;}
+
+/* ===== Category bar ===== */
+.catbar-wrap{max-width:720px;margin:0 auto;padding:10px 12px 0;}
+.catbar{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px;scrollbar-width:none;}
+.catbar::-webkit-scrollbar{display:none;}
+.chip{flex-shrink:0;border:1.5px solid var(--line);background:var(--white);color:var(--grey);border-radius:999px;padding:8px 15px;font-size:.83rem;font-weight:700;white-space:nowrap;transition:.15s;}
+.chip.active{background:var(--red);border-color:var(--red);color:var(--cream);}
+
+main{max-width:720px;margin:6px auto;padding:8px 12px 0;}
+.empty{text-align:center;color:var(--grey);padding:60px 20px;font-size:.92rem;}
+.empty .big{font-size:2.6rem;display:block;margin-bottom:10px;}
+
+/* ===== Reels grid ===== */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(min-width:560px){.grid{grid-template-columns:1fr 1fr 1fr;}}
+.rcard{background:var(--white);border-radius:14px;overflow:hidden;box-shadow:0 2px 10px rgba(74,10,10,.08);border:1px solid var(--line);}
+.rthumb{position:relative;width:100%;aspect-ratio:9/16;background:#000;overflow:hidden;}
+.rthumb img{width:100%;height:100%;object-fit:cover;display:block;opacity:.92;}
+.rthumb .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.rthumb .play span{width:40px;height:40px;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.1rem;backdrop-filter:blur(2px);}
+.rthumb .cat-badge{position:absolute;left:6px;top:6px;background:rgba(179,18,23,.88);color:#fff;font-size:.62rem;font-weight:800;padding:3px 8px;border-radius:999px;max-width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rmeta{padding:8px 9px 10px;}
+.rmeta .t{font-size:.8rem;font-weight:700;line-height:1.35;margin:0 0 3px;max-height:2.7em;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
+.rmeta .u{font-size:.66rem;color:var(--grey);}
+
+/* ===== FAB ===== */
+.fab{position:fixed;right:18px;bottom:22px;width:58px;height:58px;border-radius:50%;background:linear-gradient(160deg,var(--gold-2),var(--gold));color:var(--red-deeper);border:none;font-size:1.7rem;font-weight:900;box-shadow:0 10px 24px rgba(74,10,10,.35);z-index:50;display:flex;align-items:center;justify-content:center;}
+
+/* ===== Modal shell ===== */
+.modal-bg{position:fixed;inset:0;background:rgba(26,21,18,.55);display:none;align-items:flex-end;justify-content:center;z-index:200;}
+.modal-bg.open{display:flex;}
+@media(min-width:640px){.modal-bg{align-items:center;}}
+.modal-box{background:var(--cream);width:100%;max-width:480px;max-height:92vh;overflow-y:auto;border-radius:20px 20px 0 0;padding:20px 18px 26px;box-shadow:0 -10px 40px rgba(0,0,0,.3);}
+@media(min-width:640px){.modal-box{border-radius:20px;}}
+#adminModal .modal-box{max-width:640px;max-height:94vh;}
+@media(min-width:900px){#adminModal .modal-box{max-width:820px;padding:26px 30px 32px;}}
+.modal-head{display:flex;align-items:center;margin-bottom:14px;}
+.modal-head h2{margin:0;font-size:1.1rem;color:var(--red-dark);}
+.modal-close{margin-left:auto;background:var(--cream-2);border:none;width:32px;height:32px;border-radius:50%;font-size:1rem;color:var(--grey);}
+.field{margin-bottom:13px;}
+label{display:block;font-size:.8rem;font-weight:700;color:var(--red-dark);margin-bottom:5px;}
+input[type=text],input[type=email],input[type=url],input[type=password],select{
+  width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:11px;background:var(--white);font-size:.95rem;color:var(--ink);
+}
+input:focus,select:focus{outline:none;border-color:var(--gold);}
+.hint{color:var(--grey);font-size:.78rem;margin:2px 0 0;}
+.btn{width:100%;background:var(--red);color:var(--cream);border:none;border-radius:12px;padding:13px;font-size:.95rem;font-weight:800;margin-top:4px;}
+.btn.outline{background:var(--white);color:var(--red-dark);border:1.5px solid var(--red);}
+.btn.gold{background:linear-gradient(160deg,var(--gold-2),var(--gold));color:var(--red-deeper);}
+.btn.sm{width:auto;padding:9px 14px;font-size:.82rem;}
+.row2{display:flex;gap:8px;}
+.row2 .btn{flex:1;}
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:999px;font-size:.83rem;z-index:400;opacity:0;transition:.25s;pointer-events:none;}
+.toast.show{opacity:1;bottom:110px;}
+
+/* ===== Login gate ===== */
+.gate{position:fixed;inset:0;background:linear-gradient(160deg,var(--red) 0%,var(--red-dark) 55%,var(--red-deeper) 100%);z-index:500;display:flex;align-items:center;justify-content:center;padding:24px;}
+.gate-card{background:var(--cream);border-radius:20px;padding:28px 22px;max-width:380px;width:100%;box-shadow:0 20px 50px rgba(0,0,0,.4);text-align:center;}
+.gate-card .icon{font-size:2.6rem;margin-bottom:8px;}
+.gate-card h1{font-size:1.25rem;margin:0 0 6px;color:var(--red-dark);}
+.gate-card p{font-size:.85rem;color:var(--grey);margin:0 0 18px;line-height:1.6;}
+.gate-card .field{text-align:left;}
+
+/* ===== Reels player modal ===== */
+.reels-modal{position:fixed;inset:0;background:rgba(10,6,4,.96);z-index:999;display:none;align-items:center;justify-content:center;padding:14px;}
+.reels-modal.open{display:flex;}
+.reels-wrap{position:relative;width:min(92vw,420px);aspect-ratio:9/16;background:#000;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.reels-wrap #reelsPlayerHost{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border:0;}
+.reels-swipe{position:absolute;inset:0;z-index:1;background:transparent;touch-action:none;}
+.stat-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;text-align:center;flex:1;min-width:96px;}
+.stat-box b{display:block;font-size:1.35rem;color:var(--red);line-height:1.3;}
+.stat-box span{font-size:.66rem;color:#777;display:block;}
+.reels-close,.reels-prev,.reels-next{position:absolute;z-index:2;background:rgba(0,0,0,.55);color:#fff;border:none;width:38px;height:38px;border-radius:50%;font-size:1.2rem;display:flex;align-items:center;justify-content:center;}
+.reels-close{top:10px;right:10px;}
+.reels-prev{left:10px;top:50%;transform:translateY(-50%);}
+.reels-next{right:10px;top:50%;transform:translateY(-50%);}
+.reels-caption{position:absolute;left:0;right:0;bottom:0;padding:14px 16px 16px;background:linear-gradient(transparent, rgba(0,0,0,.8));color:#fff;font-size:.85rem;}
+.reels-caption .cat{display:inline-block;background:var(--gold-2);color:var(--red-deeper);font-size:.62rem;font-weight:800;padding:3px 9px;border-radius:999px;margin-bottom:6px;}
+.reels-caption .em{opacity:.75;font-size:.7rem;margin-top:3px;}
+
+/* ===== Admin ===== */
+.admin-tabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;}
+.admin-tabs button{flex-shrink:0;border:1.5px solid var(--line);background:var(--white);color:var(--grey);border-radius:10px;padding:8px 12px;font-size:.8rem;font-weight:700;}
+.admin-tabs button.active{background:var(--red);border-color:var(--red);color:var(--cream);}
+.list-row{display:flex;align-items:center;gap:8px;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px;}
+.list-row .info{flex:1;min-width:0;}
+.list-row .info b{display:block;font-size:.85rem;}
+.list-row .info span{display:block;font-size:.72rem;color:var(--grey);margin-top:1px;}
+.icon-btn{background:var(--cream-2);border:none;width:32px;height:32px;border-radius:8px;font-size:.85rem;flex-shrink:0;}
+.icon-btn.danger{background:#F7DEDD;color:var(--red-dark);}
+.thumb-mini{width:34px;height:46px;border-radius:6px;object-fit:cover;flex-shrink:0;background:#000;}
+</style>
+</head>
+<body>
+
+<!-- ===== Gmail ID login gate ===== -->
+<div class="gate" id="loginGate">
+  <div class="gate-card">
+    <div class="icon">🎬</div>
+    <h1>NTK ரீல்ஸ்</h1>
+    <p>வீடியோக்களை காணவும், சேர்க்கவும் உங்கள் பெயர் மற்றும் செல்போன் நம்பரை உள்ளிடவும்.<br>(OTP/கடவுச்சொல் தேவையில்லை)</p>
+    <div class="field">
+      <label>பெயர் *</label>
+      <input type="text" id="gateName" placeholder="உங்கள் முழுப்பெயர்" autocomplete="name">
+    </div>
+    <div class="field">
+      <label>செல்போன் நம்பர் *</label>
+      <input type="tel" id="gatePhone" placeholder="9xxxxxxxxx" autocomplete="tel" maxlength="13" inputmode="numeric">
+    </div>
+    <button class="btn" onclick="doLogin()">தொடரவும்</button>
+    <p class="hint" id="gateErr" style="color:var(--red);display:none;"></p>
+    <p class="hint" style="margin-top:16px;padding:10px 12px;background:#fff3f2;border:1px solid var(--red);border-radius:10px;color:var(--red-dark);font-size:.7rem;line-height:1.65;text-align:left;">
+      ⚠️ <b>எச்சரிக்கை:</b> தவறான, ஆபாசமான, வன்முறையைத் தூண்டும் அல்லது சட்டவிரோதமான வீடியோக்களைப் பதிவேற்றுவது தண்டனைக்குரிய குற்றமாகும். இத்தகைய தவறான பயன்பாடு கண்டறியப்பட்டால் அந்தந்த பயனர் நிரந்தரமாக தடை செய்யப்படுவார் மற்றும் பொருந்தும் சட்டப்படி (IT Act உள்ளிட்டவை) சட்ட நடவடிக்கை எடுக்கப்படும்.
+    </p>
+  </div>
+</div>
+
+<!-- ===== Header ===== -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-mark">🎞️</div>
+    <div>
+      <p class="brand-title">NTK ரீல்ஸ்</p>
+      <p class="brand-sub">தலைப்புகள் வாரியாக குறு வீடியோக்கள்</p>
+    </div>
+    <button class="hdr-btn" onclick="openAdmin()" title="நிர்வாகம்">⚙️</button>
+  </div>
+  <div class="who">
+    <span>வணக்கம், <b id="whoPhone">—</b></span>
+    <span id="publicVisitCount" style="margin-left:auto;font-weight:700;">👁️ —</span>
+    <button class="switch" onclick="switchUser()">மாற்று</button>
+  </div>
+</header>
+
+<!-- ===== Category bar ===== -->
+<div class="catbar-wrap">
+  <div class="catbar" id="catBar"></div>
+</div>
+
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="emptyMsg" style="display:none;">
+    <span class="big">📹</span>
+    இன்னும் இந்த தலைப்பில் வீடியோக்கள் இல்லை.<br>கீழே உள்ள + பொத்தானை அழுத்தி சேர்க்கவும்.
+  </div>
+</main>
+
+<button class="fab" onclick="openAddModal()">+</button>
+
+<!-- ===== Add video modal ===== -->
+<div class="modal-bg" id="addModal">
+  <div class="modal-box">
+    <div class="modal-head"><h2>🎬 புதிய ரீல் சேர்க்க</h2><button class="modal-close" onclick="closeModal('addModal')">✕</button></div>
+    <div class="field">
+      <label>தலைப்பு (Title) *</label>
+      <input type="text" id="addTitle" placeholder="எ.கா. திருத்தணி பொதுக்கூட்டம்">
+    </div>
+    <div class="field">
+      <label>YouTube வீடியோ லிங்க் *</label>
+      <input type="url" id="addUrl" placeholder="https://youtube.com/shorts/...">
+      <p class="hint">Shorts, watch அல்லது youtu.be லிங்க் — எதுவும் சரி</p>
+    </div>
+    <div class="field">
+      <label>வகை (Category) *</label>
+      <select id="addCategory"></select>
+    </div>
+    <button class="btn" onclick="submitVideo()">✅ சேர்க்கவும்</button>
+    <p class="hint" id="addErr" style="color:var(--red);display:none;"></p>
+  </div>
+</div>
+
+<!-- ===== Reels-style player modal ===== -->
+<div class="reels-modal" id="reelsModal">
+  <div class="reels-wrap">
+    <div id="reelsPlayerHost"></div>
+    <div class="reels-swipe" id="reelsSwipe"></div>
+    <div class="reels-caption" id="reelsCaption"></div>
+    <button class="reels-close" onclick="closeReelsModal()">✕</button>
+    <button class="reels-prev" onclick="reelsNav(-1)">‹</button>
+    <button class="reels-next" onclick="reelsNav(1)">›</button>
+  </div>
+</div>
+
+<!-- ===== Admin modal ===== -->
+<div class="modal-bg" id="adminModal">
+  <div class="modal-box">
+    <div id="adminLock">
+      <div class="modal-head"><h2>🔒 நிர்வாக உள்நுழைவு</h2><button class="modal-close" onclick="closeModal('adminModal')">✕</button></div>
+      <div class="field"><label>ஐடி (Username)</label><input type="text" id="adminUser" autocomplete="off"></div>
+      <div class="field"><label>கடவுச்சொல்</label><input type="password" id="adminPass" autocomplete="off"></div>
+      <button class="btn" onclick="tryAdminLogin()">உள்நுழை</button>
+      <p class="hint" id="adminErr" style="color:var(--red);display:none;"></p>
+    </div>
+
+    <div id="adminContent" style="display:none;">
+      <div class="modal-head"><h2>⚙️ நிர்வாகம்</h2><button class="modal-close" onclick="closeModal('adminModal')">✕</button></div>
+      <div class="admin-tabs" id="adminTabs">
+        <button data-t="videos" class="active">🎬 வீடியோக்கள்</button>
+        <button data-t="users">👥 பயனர்கள்</button>
+        <button data-t="cats">🏷️ தலைப்புகள்</button>
+        <button data-t="settings">🔧 அமைப்புகள்</button>
+      </div>
+
+      <!-- Videos tab -->
+      <div class="admin-panel" id="ap-videos">
+        <button class="btn gold sm" style="margin-bottom:12px;" onclick="openAddModal(true)">+ நேரடியாக வீடியோ சேர்க்க</button>
+        <div id="adminVideoList"></div>
+      </div>
+
+      <!-- Users tab -->
+      <div class="admin-panel" id="ap-users" style="display:none;">
+        <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+          <div class="stat-box"><b id="statTotalVisits">0</b><span>மொத்த நுழைவுகள்</span></div>
+          <div class="stat-box"><b id="statUniqueVisitors">0</b><span>தனிப்பட்ட நபர்கள்</span></div>
+          <div class="stat-box"><b id="statTotalUploaders">0</b><span>வீடியோ பதிவேற்றியவர்கள்</span></div>
+        </div>
+        <p class="hint" style="margin-bottom:10px;">வீடியோ பதிவேற்றியவர்களின் பட்டியல் — பெயர், செல்போன் நம்பர், பதிவேற்றிய வீடியோக்களின் எண்ணிக்கை. தேவையற்ற முறையில் பயன்படுத்துபவர்களை தடை செய்யலாம்.</p>
+        <div id="adminUploadersList"></div>
+        <hr style="margin:18px 0;border:none;border-top:1px solid var(--line);">
+        <h3 style="margin:0 0 8px;font-size:.9rem;">நேரடியாக ஒரு நம்பரை தடை செய்ய</h3>
+        <div class="row2">
+          <input type="tel" id="manualBlockPhone" placeholder="செல்போன் நம்பர்" maxlength="13" inputmode="numeric">
+          <button class="btn outline sm" style="width:auto;color:var(--red);border-color:var(--red);" onclick="manualBlockPhone()">🚫 தடை செய்</button>
+        </div>
+        <div id="manualBlockedList"></div>
+        <hr style="margin:18px 0;border:none;border-top:1px solid var(--line);">
+        <h3 style="margin:0 0 8px;font-size:.9rem;">உள் நுழைந்தவர்கள் பட்டியல் (பெயர் · செல்போன் · நேரம்)</h3>
+        <p class="hint" style="margin-bottom:10px;">வீடியோ பதிவேற்றாமலேயே app-ஐ திறந்தவர்கள் உட்பட, உள்நுழைந்த ஒவ்வொருவரும் இங்கே தெரியும்.</p>
+        <div id="adminVisitorsList"></div>
+      </div>
+
+      <!-- Categories tab -->
+      <div class="admin-panel" id="ap-cats" style="display:none;">
+        <div class="row2" style="margin-bottom:14px;">
+          <input type="text" id="newCatName" placeholder="புதிய தலைப்பு பெயர்">
+          <button class="btn sm" style="width:auto;" onclick="addCategory()">+ சேர்க்க</button>
+        </div>
+        <div id="adminCatList"></div>
+      </div>
+
+      <!-- Settings tab -->
+      <div class="admin-panel" id="ap-settings" style="display:none;">
+        <h3 style="margin:0 0 8px;font-size:.95rem;">☁️ அனைத்து டிவைஸிலும் ஒரே தரவு (Cloud Sync)</h3>
+        <p class="hint" id="builtinStatus" style="font-weight:700;"></p>
+        <p class="hint">முக்கியம்: கீழே "சேமிக்கவும்" பொத்தானை அழுத்தி சேர்க்கும் URL <b>இந்த சாதனத்தில் மட்டும்</b> வேலை செய்யும். அனைத்து கம்யூட்டர்/போன்களிலும் தானாக Sync ஆக வேண்டுமெனில், கீழே உள்ள Apps Script Web App URL-ஐ, இந்த HTML கோப்பிற்குள் <code>BUILT_IN_WEBHOOK</code> என்ற இடத்தில் ஒரு முறை ஒட்டி, அந்த ஒரே கோப்பை (அப்டேட் செய்யப்பட்டதை) அனைவரும் பயன்படுத்தும் இணையதளத்தில் பதிவேற்றவும். பின் யாரும் தனியாக செட்டிங் செய்யத் தேவையில்லை.</p>
+        <div class="field"><label>Webhook URL (இந்த சாதனத்திற்கு மட்டும்)</label><input type="url" id="webhookUrl" placeholder="https://script.google.com/macros/s/.../exec"></div>
+        <div class="row2">
+          <button class="btn sm" onclick="saveWebhook()">💾 சேமிக்கவும்</button>
+          <button class="btn outline sm" onclick="manualSync()">🔄 இப்போதே Sync</button>
+        </div>
+        <p class="hint" id="syncStatus" style="margin-top:8px;"></p>
+        <details style="margin-top:12px;">
+          <summary style="cursor:pointer;font-weight:700;color:var(--red-dark);font-size:.85rem;">📋 Apps Script கோட் + அமைக்கும் வழிமுறை</summary>
+          <ol style="font-size:.78rem;color:var(--grey);padding-left:18px;line-height:1.7;">
+            <li>ஒரு புதிய Google Sheet உருவாக்கவும் (எ.கா. "NTK Reels Data")</li>
+            <li>Extensions → Apps Script திறக்கவும், கீழே உள்ள கோட்டை நகலெடுத்து ஒட்டவும்</li>
+            <li>Deploy → New deployment → Web app → Execute as: <b>Me</b>, Who has access: <b>Anyone</b></li>
+            <li>கிடைக்கும் URL-ஐ மேலே ஒட்டி "சேமிக்கவும்" அழுத்தவும்</li>
+          </ol>
+          <textarea readonly style="width:100%;height:110px;font-family:monospace;font-size:.68rem;padding:8px;border-radius:8px;border:1px solid var(--line);" id="gsCodeBox"></textarea>
+          <button class="btn outline sm" style="margin-top:6px;" onclick="copyGsCode()">📋 கோட்டை Copy செய்யவும்</button>
+        </details>
+        <hr style="margin:20px 0;border:none;border-top:1px solid var(--line);">
+        <h3 style="margin:0 0 8px;font-size:.95rem;">நிர்வாகிகள் (Admins)</h3>
+        <p class="hint">கூடுதல் நிர்வாகிகளை சேர்க்கலாம், திருத்தலாம், நீக்கலாம்.</p>
+        <div id="adminAccountsList"></div>
+        <div class="row2" style="margin-top:12px;">
+          <input type="text" id="newAdminUser2" placeholder="புதிய ஐடி" autocomplete="off">
+          <input type="text" id="newAdminPass2" placeholder="கடவுச்சொல்" autocomplete="off">
+        </div>
+        <button class="btn sm" style="margin-top:8px;" onclick="addAdminAccount()">+ நிர்வாகி சேர்க்க</button>
+        <hr style="margin:20px 0;border:none;border-top:1px solid var(--line);">
+        <h3 style="margin:0 0 8px;font-size:.95rem;">தரவு காப்பு / மீட்பு (இந்த டிவைஸ் மட்டும்)</h3>
+        <div class="row2">
+          <button class="btn outline sm" onclick="exportData()">⬇️ Export</button>
+          <button class="btn outline sm" onclick="document.getElementById('importFile').click()">⬆️ Import</button>
+        </div>
+        <input type="file" id="importFile" accept="application/json" style="display:none;" onchange="importData(event)">
+        <button class="btn outline sm" style="margin-top:14px;border-color:var(--grey);color:var(--grey);" onclick="adminLogout()">🚪 வெளியேறு</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ================= Storage ================= */
+const DB = {
+  load(k, d){ try{ const v = localStorage.getItem('ntkr_'+k); return v===null ? d : JSON.parse(v); }catch(e){ return d; } },
+  save(k, v){ localStorage.setItem('ntkr_'+k, JSON.stringify(v)); }
+};
+
+// 👉 எல்லா சாதனங்களிலும் தானாக Sync ஆக வேண்டுமெனில், உங்கள் Google Apps Script
+// Web App URL-ஐ இங்கே ஒரு முறை ஒட்டவும் (Settings → Cloud Sync-ல் உள்ள கோட்டைப் பயன்படுத்தி
+// அமைத்த பின் கிடைக்கும் URL). இதை இந்த ஒரே HTML கோப்பில் செய்துவிட்டு, அப்டேட் செய்யப்பட்ட
+// கோப்பையே எல்லா இடங்களிலும் பயன்படுத்தினால், எந்த சாதனத்திலும் தனியாக செட்டிங் தேவையில்லை.
+const BUILT_IN_WEBHOOK = 'https://script.google.com/macros/s/AKfycbyxl7OR9tfy5FOlKIQxoyrgxyr2dkPI1uQrsRVZS20t0IyL_G28WNiWKKFD6REBSQ4/exec';
+
+let categories = DB.load('categories', null);
+if(!categories || !categories.length){ categories = [{id:'general', name:'பொது'}]; DB.save('categories', categories); }
+let videos = DB.load('videos', []);
+let admins = DB.load('admins', null);
+if(!admins || !admins.length){
+  const legacyAdmin = DB.load('admin', null); // migrate older single-admin installs
+  admins = legacyAdmin ? [legacyAdmin] : [{username:'admin', password:'ntk2026'}];
+  DB.save('admins', admins);
+}
+let blocked = DB.load('blocked', []);
+let visitors = DB.load('visitors', []);
+let settings = DB.load('settings', {webhook:''});
+if(!settings.webhook && BUILT_IN_WEBHOOK){ settings.webhook = BUILT_IN_WEBHOOK; DB.save('settings', settings); }
+let userPhone = DB.load('userPhone', '');
+let userName = DB.load('userName', '');
+let isAdmin = sessionStorage.getItem('ntkr_admin_session') === '1';
+let currentAdminUser = sessionStorage.getItem('ntkr_admin_username') || '';
+let activeCat = 'all';
+let addingAsAdmin = false;
+
+function persistAll(){ DB.save('categories', categories); DB.save('videos', videos); DB.save('admins', admins); DB.save('blocked', blocked); DB.save('visitors', visitors); DB.save('settings', settings); }
+function videoOrder(v){ return (typeof v.order === 'number' && !isNaN(v.order)) ? v.order : (v.ts||0); }
+function isBlocked(phone){ return blocked.some(b=>b.phone===phone); }
+function enforceBlockCheck(){
+  if(userPhone && isBlocked(userPhone)){
+    userPhone=''; DB.save('userPhone','');
+    userName=''; DB.save('userName','');
+    document.getElementById('loginGate').style.display='flex';
+    const g1=document.getElementById('gateName'), g2=document.getElementById('gatePhone');
+    if(g1) g1.value=''; if(g2) g2.value='';
+    const err = document.getElementById('gateErr');
+    err.textContent = '🚫 உங்கள் செல்போன் நம்பர் நிர்வாகியால் தடை செய்யப்பட்டுள்ளது. உள்நுழைய முடியாது.';
+    err.style.display='block';
+  }
+}
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'), 1800); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function fmtDateTime(ts){
+  if(!ts) return '—';
+  try{ return new Date(ts).toLocaleString('ta-IN', {day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'}); }
+  catch(e){ return new Date(ts).toLocaleString(); }
+}
+
+/* ================= YouTube helpers ================= */
+function extractYtId(url){
+  if(!url) return null;
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|shorts\/|embed\/|live\/))([a-zA-Z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+/* ================= Login gate (phone number) ================= */
+function normalizePhone(v){
+  let d = v.replace(/[^0-9]/g,'');
+  if(d.length===12 && d.startsWith('91')) d = d.slice(2);
+  return d;
+}
+function isValidPhone(v){
+  const d = normalizePhone(v);
+  return /^[6-9]\d{9}$/.test(d);
+}
+function initGate(){
+  if(userPhone){
+    document.getElementById('loginGate').style.display='none';
+    document.getElementById('whoPhone').textContent = userName || userPhone;
+  } else {
+    document.getElementById('loginGate').style.display='flex';
+  }
+  enforceBlockCheck();
+}
+function doLogin(){
+  const rawName = document.getElementById('gateName').value.trim();
+  const raw = document.getElementById('gatePhone').value.trim();
+  const err = document.getElementById('gateErr');
+  if(!rawName){
+    err.textContent = 'உங்கள் பெயரை உள்ளிடவும்.'; err.style.display='block'; return;
+  }
+  if(!isValidPhone(raw)){
+    err.textContent = 'சரியான 10 இலக்க செல்போன் நம்பரை உள்ளிடவும்.'; err.style.display='block'; return;
+  }
+  const normalized = normalizePhone(raw);
+  if(isBlocked(normalized)){
+    err.textContent = '🚫 இந்த செல்போன் நம்பர் தடை செய்யப்பட்டுள்ளது. உள்நுழைய முடியாது.'; err.style.display='block'; return;
+  }
+  userName = rawName; DB.save('userName', userName);
+  userPhone = normalized; DB.save('userPhone', userPhone);
+  const visitRec = {phone: userPhone, name: userName, ts: Date.now()};
+  visitors.push(visitRec); DB.save('visitors', visitors);
+  pushNewVisitorRemote(visitRec);
+  renderPublicVisitCount();
+  err.style.display='none';
+  document.getElementById('loginGate').style.display='none';
+  document.getElementById('whoPhone').textContent = userName;
+}
+function switchUser(){
+  userPhone=''; DB.save('userPhone','');
+  userName=''; DB.save('userName','');
+  document.getElementById('gateName').value='';
+  document.getElementById('gatePhone').value='';
+  document.getElementById('gateErr').style.display='none';
+  document.getElementById('loginGate').style.display='flex';
+}
+
+/* ================= Category bar + grid ================= */
+function renderCatBar(){
+  const bar = document.getElementById('catBar');
+  let html = `<button class="chip ${activeCat==='all'?'active':''}" onclick="setActiveCat('all')">அனைத்தும்</button>`;
+  categories.forEach(c=>{
+    html += `<button class="chip ${activeCat===c.id?'active':''}" onclick="setActiveCat('${c.id}')">${esc(c.name)}</button>`;
+  });
+  bar.innerHTML = html;
+}
+function setActiveCat(id){ activeCat = id; renderCatBar(); renderGrid(); }
+function catName(id){ const c = categories.find(x=>x.id===id); return c ? c.name : 'பொது'; }
+
+function filteredVideos(){
+  const list = activeCat==='all' ? videos : videos.filter(v=>v.category===activeCat);
+  return list.slice().sort((a,b)=> videoOrder(b) - videoOrder(a));
+}
+
+function renderGrid(){
+  const list = filteredVideos();
+  const grid = document.getElementById('grid');
+  const empty = document.getElementById('emptyMsg');
+  if(!list.length){ grid.innerHTML=''; empty.style.display='block'; return; }
+  empty.style.display='none';
+  grid.innerHTML = list.map((v,i)=>`
+    <div class="rcard" onclick="openReelsModal(${i})">
+      <div class="rthumb">
+        <img src="https://img.youtube.com/vi/${v.ytId}/hqdefault.jpg" loading="lazy" alt="">
+        <span class="cat-badge">${esc(catName(v.category))}</span>
+        <div class="play"><span>▶</span></div>
+      </div>
+      <div class="rmeta">
+        <p class="t">${esc(v.title)}</p>
+        <span class="u">👤 ${esc(v.name || maskPhone(v.phone) || 'பயனர்')}</span>
+      </div>
+    </div>
+  `).join('');
+  window.currentReelsQueue = list;
+}
+function maskPhone(p){
+  if(!p) return '';
+  const s = String(p);
+  if(s.length<=4) return s;
+  return s.slice(0,2) + '*'.repeat(s.length-4) + s.slice(-2);
+}
+
+/* ================= Add video ================= */
+function fillCategorySelect(sel){
+  sel.innerHTML = categories.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');
+}
+function openAddModal(asAdmin){
+  addingAsAdmin = !!asAdmin;
+  if(!asAdmin && !userPhone){ toast('முதலில் செல்போன் நம்பர் உள்ளிடவும்'); initGate(); return; }
+  fillCategorySelect(document.getElementById('addCategory'));
+  document.getElementById('addTitle').value='';
+  document.getElementById('addUrl').value='';
+  document.getElementById('addErr').style.display='none';
+  document.getElementById('addModal').classList.add('open');
+}
+function submitVideo(){
+  const title = document.getElementById('addTitle').value.trim();
+  const url = document.getElementById('addUrl').value.trim();
+  const category = document.getElementById('addCategory').value;
+  const err = document.getElementById('addErr');
+  const ytId = extractYtId(url);
+  if(!title){ err.textContent='தலைப்பு உள்ளிடவும்.'; err.style.display='block'; return; }
+  if(!ytId){ err.textContent='சரியான YouTube லிங்க் உள்ளிடவும்.'; err.style.display='block'; return; }
+  const dup = videos.find(v=>v.ytId===ytId);
+  if(dup){
+    err.textContent = '⚠️ இந்த வீடியோ ஏற்கனவே "'+dup.title+'" என்ற பெயரில் பதிவேற்றப்பட்டுள்ளது. மீண்டும் சேர்க்க முடியாது.';
+    err.style.display='block';
+    return;
+  }
+  const now = Date.now();
+  const rec = {
+    id: 'v'+now+Math.random().toString(36).slice(2,7),
+    title, url, ytId, category,
+    name: addingAsAdmin ? ((currentAdminUser || (admins[0]&&admins[0].username) || 'admin')+' (admin)') : (userName || 'பயனர்'),
+    phone: addingAsAdmin ? '' : userPhone,
+    ts: now,
+    order: now
+  };
+  videos.push(rec);
+  persistAll();
+  closeModal('addModal');
+  toast('ரீல் சேர்க்கப்பட்டது ✅');
+  renderGrid();
+  if(document.getElementById('adminContent').style.display!=='none') renderAdminVideoList();
+  pushNewVideoRemote(rec);
+}
+
+/* ================= Reels-style player ================= */
+let reelsPlayer=null, reelsQueue=[], reelsIdx=0, ytApiReady=false, pendingReelsOpen=null;
+function loadYtApi(){
+  if(window.YT && window.YT.Player){ ytApiReady=true; return; }
+  const tag=document.createElement('script'); tag.src='https://www.youtube.com/iframe_api'; document.body.appendChild(tag);
+  window.onYouTubeIframeAPIReady = function(){ ytApiReady=true; if(pendingReelsOpen!==null){ const idx=pendingReelsOpen; pendingReelsOpen=null; openReelsModal(idx); } };
+}
+function openReelsModal(idx){
+  reelsQueue = window.currentReelsQueue || [];
+  if(!reelsQueue.length) return;
+  reelsIdx = idx;
+  document.getElementById('reelsModal').classList.add('open');
+  if(!ytApiReady){ loadYtApi(); pendingReelsOpen=idx; return; }
+  playReelsIndex(reelsIdx);
+}
+function playReelsIndex(idx){
+  if(idx<0) idx = reelsQueue.length-1;
+  if(idx>=reelsQueue.length) idx = 0;
+  reelsIdx = idx;
+  const item = reelsQueue[reelsIdx];
+  document.getElementById('reelsCaption').innerHTML =
+    `<span class="cat">${esc(catName(item.category))}</span><div>${esc(item.title)}</div><div class="em">👤 ${esc(item.name || maskPhone(item.phone) || 'பயனர்')}</div>`;
+  if(reelsPlayer && typeof reelsPlayer.loadVideoById==='function'){
+    reelsPlayer.loadVideoById(item.ytId);
+  } else {
+    document.getElementById('reelsPlayerHost').innerHTML='';
+    reelsPlayer = new YT.Player('reelsPlayerHost', {
+      videoId:item.ytId,
+      playerVars:{autoplay:1, playsinline:1, rel:0, controls:0, disablekb:1},
+      events:{ onStateChange: e=>{ if(e.data===YT.PlayerState.ENDED) playReelsIndex(reelsIdx+1); } }
+    });
+  }
+}
+function reelsNav(dir){ playReelsIndex(reelsIdx+dir); }
+function closeReelsModal(){
+  document.getElementById('reelsModal').classList.remove('open');
+  if(reelsPlayer && typeof reelsPlayer.stopVideo==='function') reelsPlayer.stopVideo();
+}
+(function(){
+  let sy=0, sx=0, moved=false;
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const cat = document.getElementById('reelsSwipe');
+    if(!cat) return;
+    cat.addEventListener('touchstart', e=>{
+      sy = e.touches[0].clientY; sx = e.touches[0].clientX; moved=false;
+    }, {passive:true});
+    cat.addEventListener('touchmove', e=>{
+      moved = true;
+      e.preventDefault(); // stop background/page from scrolling while swiping the reel
+    }, {passive:false});
+    cat.addEventListener('touchend', e=>{
+      const t = e.changedTouches[0];
+      const dy = t.clientY - sy, dx = t.clientX - sx;
+      if(!moved || (Math.abs(dy) < 40 && Math.abs(dx) < 40)){
+        // treated as a tap, not a swipe → toggle play/pause
+        if(reelsPlayer && typeof reelsPlayer.getPlayerState==='function'){
+          const st = reelsPlayer.getPlayerState();
+          if(st === 1) reelsPlayer.pauseVideo(); else reelsPlayer.playVideo();
+        }
+        return;
+      }
+      if(Math.abs(dy) > Math.abs(dx)){
+        if(dy < 0) reelsNav(1); else reelsNav(-1);
+      }
+    }, {passive:true});
+    // also support mouse drag on desktop/trackpad testing
+    let mdown=false, mx=0, my=0;
+    cat.addEventListener('mousedown', e=>{ mdown=true; mx=e.clientX; my=e.clientY; });
+    cat.addEventListener('mouseup', e=>{
+      if(!mdown) return; mdown=false;
+      const dy = e.clientY - my, dx = e.clientX - mx;
+      if(Math.abs(dy) < 40 && Math.abs(dx) < 40) return;
+      if(Math.abs(dy) > Math.abs(dx)){ if(dy < 0) reelsNav(1); else reelsNav(-1); }
+    });
+  });
+})();
+
+/* ================= Admin ================= */
+function openAdmin(){
+  document.getElementById('adminModal').classList.add('open');
+  document.getElementById('adminUser').value=''; document.getElementById('adminPass').value='';
+  document.getElementById('adminErr').style.display='none';
+  if(isAdmin){ showAdminContent(); } else { document.getElementById('adminLock').style.display='block'; document.getElementById('adminContent').style.display='none'; }
+}
+function tryAdminLogin(){
+  const u = document.getElementById('adminUser').value.trim();
+  const p = document.getElementById('adminPass').value;
+  const match = admins.find(a=>a.username===u && a.password===p);
+  if(match){
+    isAdmin=true; currentAdminUser=u;
+    sessionStorage.setItem('ntkr_admin_session','1');
+    sessionStorage.setItem('ntkr_admin_username', u);
+    showAdminContent();
+  } else {
+    const err=document.getElementById('adminErr'); err.textContent='ஐடி/கடவுச்சொல் தவறு.'; err.style.display='block';
+  }
+}
+function showAdminContent(){
+  document.getElementById('adminLock').style.display='none';
+  document.getElementById('adminContent').style.display='block';
+  renderAdminVideoList(); renderAdminCatList(); renderAdminUploadersList(); renderManualBlockedList(); renderAdminAccountsList(); renderVisitorStats(); renderAdminVisitorsList(); loadSettingsForm();
+}
+function adminLogout(){
+  isAdmin=false; sessionStorage.removeItem('ntkr_admin_session'); sessionStorage.removeItem('ntkr_admin_username');
+  closeModal('adminModal');
+  toast('வெளியேறினீர்கள்');
+}
+document.addEventListener('click', e=>{
+  const btn = e.target.closest('#adminTabs button');
+  if(!btn) return;
+  document.querySelectorAll('#adminTabs button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  ['videos','users','cats','settings'].forEach(t=>{
+    document.getElementById('ap-'+t).style.display = (t===btn.dataset.t) ? 'block' : 'none';
+  });
+  if(btn.dataset.t==='users'){ renderAdminUploadersList(); renderManualBlockedList(); renderVisitorStats(); renderAdminVisitorsList(); }
+});
+
+function renderAdminVideoList(){
+  const wrap = document.getElementById('adminVideoList');
+  const list = videos.slice().sort((a,b)=>videoOrder(b)-videoOrder(a));
+  if(!list.length){ wrap.innerHTML = '<p class="hint">இன்னும் வீடியோக்கள் இல்லை.</p>'; return; }
+  wrap.innerHTML = '<p class="hint" style="margin-bottom:10px;">▲▼ பொத்தான்களால் வரிசையை மாற்றலாம் — மேலே இருப்பது முதலில் காட்சிக்கு வரும்.</p>' + list.map((v,i)=>`
+    <div class="list-row">
+      <img class="thumb-mini" src="https://img.youtube.com/vi/${v.ytId}/default.jpg" alt="">
+      <div class="info">
+        <b>${esc(v.title)}</b>
+        <span>${esc(catName(v.category))} · 👤 ${esc(v.name||'—')} · 📱 ${esc(v.phone||'—')} · ${esc(fmtDateTime(v.ts))}</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:3px;flex-shrink:0;">
+        <button class="icon-btn" style="height:24px;font-size:.68rem;${i===0?'opacity:.35;':''}" onclick="moveVideo('${v.id}',-1)">▲</button>
+        <button class="icon-btn" style="height:24px;font-size:.68rem;${i===list.length-1?'opacity:.35;':''}" onclick="moveVideo('${v.id}',1)">▼</button>
+      </div>
+      <button class="icon-btn" onclick="editVideo('${v.id}')">✏️</button>
+      <button class="icon-btn danger" onclick="deleteVideo('${v.id}')">🗑️</button>
+    </div>
+  `).join('');
+}
+function moveVideo(id, dir){
+  const list = videos.slice().sort((a,b)=>videoOrder(b)-videoOrder(a));
+  const idx = list.findIndex(v=>v.id===id);
+  const swapIdx = idx + dir;
+  if(idx<0 || swapIdx<0 || swapIdx>=list.length) return;
+  const a = list[idx], b = list[swapIdx];
+  const oa = videoOrder(a), ob = videoOrder(b);
+  a.order = ob; b.order = oa;
+  persistAll(); renderAdminVideoList(); renderGrid();
+  toast('வரிசை மாற்றப்பட்டது ✅');
+  syncVideosToSheet();
+}
+function deleteVideo(id){
+  if(!confirm('இந்த வீடியோவை நீக்கவா?')) return;
+  videos = videos.filter(v=>v.id!==id);
+  persistAll(); renderAdminVideoList(); renderGrid();
+  toast('நீக்கப்பட்டது');
+  syncVideosToSheet();
+}
+function editVideo(id){
+  const v = videos.find(x=>x.id===id); if(!v) return;
+  const newTitle = prompt('தலைப்பு:', v.title);
+  if(newTitle===null) return;
+  const newUrl = prompt('YouTube லிங்க்:', v.url);
+  if(newUrl===null) return;
+  const ytId = extractYtId(newUrl);
+  if(!ytId){ toast('சரியான YouTube லிங்க் இல்லை'); return; }
+  const dup = videos.find(x=>x.ytId===ytId && x.id!==v.id);
+  if(dup){ toast('⚠️ இந்த வீடியோ ஏற்கனவே "'+dup.title+'" என்ற பெயரில் உள்ளது'); return; }
+  const catList = categories.map((c,i)=>`${i+1}. ${c.name}`).join('\n');
+  const pick = prompt('வகை எண்ணை உள்ளிடவும்:\n'+catList, String(categories.findIndex(c=>c.id===v.category)+1));
+  if(pick===null) return;
+  const idx = parseInt(pick,10)-1;
+  const category = (categories[idx] ? categories[idx].id : v.category);
+  v.title = newTitle.trim() || v.title; v.url = newUrl; v.ytId = ytId; v.category = category;
+  persistAll(); renderAdminVideoList(); renderGrid();
+  toast('புதுப்பிக்கப்பட்டது ✅');
+  syncVideosToSheet();
+}
+
+function renderAdminCatList(){
+  const wrap = document.getElementById('adminCatList');
+  wrap.innerHTML = '<p class="hint" style="margin-bottom:10px;">▲▼ பொத்தான்களால் வரிசையை மாற்றலாம் — இந்த வரிசையிலேயே தலைப்புகள் மேலே காட்சிக்கு வரும்.</p>' + categories.map((c,i)=>{
+    const count = videos.filter(v=>v.category===c.id).length;
+    return `<div class="list-row">
+      <div class="info"><b>${esc(c.name)}</b><span>${count} வீடியோக்கள்</span></div>
+      <div style="display:flex;flex-direction:column;gap:3px;flex-shrink:0;">
+        <button class="icon-btn" style="height:24px;font-size:.68rem;${i===0?'opacity:.35;':''}" onclick="moveCategory('${c.id}',-1)">▲</button>
+        <button class="icon-btn" style="height:24px;font-size:.68rem;${i===categories.length-1?'opacity:.35;':''}" onclick="moveCategory('${c.id}',1)">▼</button>
+      </div>
+      <button class="icon-btn" onclick="editCategory('${c.id}')">✏️</button>
+      <button class="icon-btn danger" onclick="deleteCategory('${c.id}')">🗑️</button>
+    </div>`;
+  }).join('');
+}
+function addCategory(){
+  const inp = document.getElementById('newCatName');
+  const name = inp.value.trim();
+  if(!name){ toast('தலைப்பு பெயர் உள்ளிடவும்'); return; }
+  const id = 'c'+Date.now()+Math.random().toString(36).slice(2,5);
+  categories.push({id, name});
+  persistAll(); inp.value='';
+  renderAdminCatList(); renderCatBar();
+  toast('தலைப்பு சேர்க்கப்பட்டது ✅');
+  syncCategoriesToSheet();
+}
+function editCategory(id){
+  const c = categories.find(x=>x.id===id); if(!c) return;
+  const newName = prompt('தலைப்பு பெயர்:', c.name);
+  if(newName===null) return;
+  const trimmed = newName.trim();
+  if(!trimmed){ toast('சரியான பெயர் உள்ளிடவும்'); return; }
+  c.name = trimmed;
+  persistAll(); renderAdminCatList(); renderCatBar(); renderGrid();
+  toast('தலைப்பு புதுப்பிக்கப்பட்டது ✅');
+  syncCategoriesToSheet();
+}
+function moveCategory(id, dir){
+  const idx = categories.findIndex(c=>c.id===id);
+  const swapIdx = idx + dir;
+  if(idx<0 || swapIdx<0 || swapIdx>=categories.length) return;
+  const tmp = categories[idx]; categories[idx] = categories[swapIdx]; categories[swapIdx] = tmp;
+  persistAll(); renderAdminCatList(); renderCatBar();
+  toast('வரிசை மாற்றப்பட்டது ✅');
+  syncCategoriesToSheet();
+}
+function deleteCategory(id){
+  if(categories.length<=1){ toast('குறைந்தது ஒரு தலைப்பு இருக்க வேண்டும்'); return; }
+  const count = videos.filter(v=>v.category===id).length;
+  if(count>0 && !confirm(`இந்த தலைப்பில் ${count} வீடியோக்கள் உள்ளன. நீக்கினால் அவை "பொது"வுக்கு மாற்றப்படும். தொடரவா?`)) return;
+  let general = categories.find(c=>c.id==='general');
+  if(!general){ general = categories[0]; }
+  videos.forEach(v=>{ if(v.category===id) v.category = general.id; });
+  categories = categories.filter(c=>c.id!==id);
+  if(activeCat===id) activeCat='all';
+  persistAll(); renderAdminCatList(); renderCatBar(); renderGrid();
+  toast('தலைப்பு நீக்கப்பட்டது');
+  syncCategoriesToSheet(); syncVideosToSheet();
+}
+function renderAdminAccountsList(){
+  const wrap = document.getElementById('adminAccountsList');
+  if(!wrap) return;
+  wrap.innerHTML = admins.map(a=>`
+    <div class="list-row">
+      <div class="info"><b>${esc(a.username)}</b><span>${a.username===currentAdminUser?'(நீங்கள் இப்போது இதில் உள்நுழைந்துள்ளீர்கள்)':'நிர்வாகி'}</span></div>
+      <button class="icon-btn" onclick="editAdminAccount('${esc(a.username)}')">✏️</button>
+      <button class="icon-btn danger" onclick="deleteAdminAccount('${esc(a.username)}')">🗑️</button>
+    </div>
+  `).join('');
+}
+function addAdminAccount(){
+  const u = document.getElementById('newAdminUser2').value.trim();
+  const p = document.getElementById('newAdminPass2').value;
+  if(!u || !p){ toast('ஐடி மற்றும் கடவுச்சொல் உள்ளிடவும்'); return; }
+  if(admins.some(a=>a.username===u)){ toast('இந்த ஐடி ஏற்கனவே உள்ளது'); return; }
+  admins.push({username:u, password:p});
+  persistAll();
+  document.getElementById('newAdminUser2').value=''; document.getElementById('newAdminPass2').value='';
+  renderAdminAccountsList();
+  toast('நிர்வாகி சேர்க்கப்பட்டார் ✅');
+  syncAdminsToSheet();
+}
+function editAdminAccount(username){
+  const a = admins.find(x=>x.username===username); if(!a) return;
+  const newU = prompt('ஐடி:', a.username); if(newU===null) return;
+  const newP = prompt('கடவுச்சொல்:', a.password); if(newP===null) return;
+  const trimmedU = newU.trim();
+  if(!trimmedU || !newP){ toast('சரியான தகவல் உள்ளிடவும்'); return; }
+  if(trimmedU!==a.username && admins.some(x=>x.username===trimmedU)){ toast('இந்த ஐடி ஏற்கனவே உள்ளது'); return; }
+  if(currentAdminUser===a.username) currentAdminUser=trimmedU;
+  a.username = trimmedU; a.password = newP;
+  persistAll(); renderAdminAccountsList();
+  toast('புதுப்பிக்கப்பட்டது ✅');
+  syncAdminsToSheet();
+}
+function deleteAdminAccount(username){
+  if(admins.length<=1){ toast('குறைந்தது ஒரு நிர்வாகி இருக்க வேண்டும்'); return; }
+  if(!confirm('இந்த நிர்வாகியை நீக்கவா?')) return;
+  admins = admins.filter(a=>a.username!==username);
+  persistAll(); renderAdminAccountsList();
+  toast('நீக்கப்பட்டது');
+  syncAdminsToSheet();
+}
+
+/* ---- Uploaders / Blocking ---- */
+function getUploaderStats(){
+  const map = {};
+  videos.forEach(v=>{
+    if(!v.phone) return; // admin-added entries have no uploader phone
+    if(!map[v.phone]) map[v.phone] = {phone:v.phone, name:v.name||'—', count:0, lastTs:0};
+    map[v.phone].count++;
+    if((v.ts||0) >= map[v.phone].lastTs){ map[v.phone].lastTs = v.ts||0; map[v.phone].name = v.name || map[v.phone].name; }
+  });
+  return Object.values(map).sort((a,b)=>b.count-a.count);
+}
+function renderVisitorStats(){
+  const t = document.getElementById('statTotalVisits');
+  const u = document.getElementById('statUniqueVisitors');
+  const p = document.getElementById('statTotalUploaders');
+  if(t) t.textContent = visitors.length;
+  if(u) u.textContent = new Set(visitors.map(v=>v.phone)).size;
+  if(p) p.textContent = getUploaderStats().length;
+}
+function renderAdminVisitorsList(){
+  const wrap = document.getElementById('adminVisitorsList');
+  if(!wrap) return;
+  const list = visitors.slice().sort((a,b)=>(b.ts||0)-(a.ts||0));
+  if(!list.length){ wrap.innerHTML = '<p class="hint">இன்னும் யாரும் உள்நுழையவில்லை.</p>'; return; }
+  wrap.innerHTML = list.map(v=>`
+    <div class="list-row">
+      <div class="info">
+        <b>👤 ${esc(v.name||'—')}</b>
+        <span>📱 ${esc(v.phone||'—')} · 🕒 ${esc(fmtDateTime(v.ts))}${isBlocked(v.phone)?' · <span style="color:var(--red);font-weight:800;">🚫 தடை</span>':''}</span>
+      </div>
+    </div>
+  `).join('');
+}
+function renderAdminUploadersList(){
+  const wrap = document.getElementById('adminUploadersList');
+  if(!wrap) return;
+  const list = getUploaderStats();
+  if(!list.length){ wrap.innerHTML = '<p class="hint">இன்னும் யாரும் வீடியோ பதிவேற்றவில்லை.</p>'; return; }
+  wrap.innerHTML = list.map(u=>{
+    const blk = isBlocked(u.phone);
+    return `<div class="list-row">
+      <div class="info">
+        <b>👤 ${esc(u.name)}</b>
+        <span>📱 ${esc(u.phone)} · 🎬 ${u.count} வீடியோக்கள்${blk?' · <span style="color:var(--red);font-weight:800;">🚫 தடை செய்யப்பட்டவர்</span>':''}</span>
+      </div>
+      <button class="icon-btn" style="${blk?'':'color:var(--red);'}" onclick="toggleBlockUser('${esc(u.phone)}')">${blk?'✅ அனுமதி':'🚫 தடை'}</button>
+    </div>`;
+  }).join('');
+}
+function renderManualBlockedList(){
+  const wrap = document.getElementById('manualBlockedList');
+  if(!wrap) return;
+  const uploaderPhones = new Set(getUploaderStats().map(u=>u.phone));
+  const onlyBlocked = blocked.filter(b=>!uploaderPhones.has(b.phone));
+  if(!onlyBlocked.length){ wrap.innerHTML=''; return; }
+  wrap.innerHTML = '<p class="hint" style="margin:12px 0 6px;">வீடியோ இல்லாத, முன்கூட்டியே தடை செய்யப்பட்ட நம்பர்கள்:</p>' + onlyBlocked.map(b=>`
+    <div class="list-row">
+      <div class="info"><b>📱 ${esc(b.phone)}</b><span>${esc(b.reason||'—')}</span></div>
+      <button class="icon-btn" onclick="toggleBlockUser('${esc(b.phone)}')">✅ அனுமதி</button>
+    </div>
+  `).join('');
+}
+function toggleBlockUser(phone){
+  if(isBlocked(phone)){
+    if(!confirm('இந்த பயனருக்கு மீண்டும் உள்நுழைய அனுமதி வழங்கவா?')) return;
+    blocked = blocked.filter(b=>b.phone!==phone);
+    toast('அனுமதி வழங்கப்பட்டது ✅');
+  } else {
+    if(!confirm('இந்த செல்போன் நம்பரை தடை செய்யவா? இவர் மீண்டும் உள்நுழைய முடியாது.')) return;
+    const reason = prompt('தடை செய்ய காரணம் (விருப்பம்):', 'தகாத/தவறான வீடியோ பதிவு') || '';
+    blocked.push({phone, reason, ts: Date.now()});
+    toast('பயனர் தடை செய்யப்பட்டார் 🚫');
+  }
+  persistAll(); renderAdminUploadersList(); renderManualBlockedList(); enforceBlockCheck();
+  syncBlockedToSheet();
+}
+function manualBlockPhone(){
+  const raw = document.getElementById('manualBlockPhone').value.trim();
+  if(!isValidPhone(raw)){ toast('சரியான செல்போன் நம்பர் உள்ளிடவும்'); return; }
+  const phone = normalizePhone(raw);
+  if(isBlocked(phone)){ toast('ஏற்கனவே தடை செய்யப்பட்டுள்ளது'); return; }
+  const reason = prompt('தடை செய்ய காரணம் (விருப்பம்):', '') || '';
+  blocked.push({phone, reason, ts: Date.now()});
+  persistAll();
+  document.getElementById('manualBlockPhone').value='';
+  renderAdminUploadersList(); renderManualBlockedList(); enforceBlockCheck();
+  toast('தடை செய்யப்பட்டது 🚫');
+  syncBlockedToSheet();
+}
+
+/* ================= Cloud Sync (Google Sheets via Apps Script) ================= */
+const GS_CODE = `function doPost(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var data = JSON.parse(e.postData.contents);
+  var result = { ok: true };
+
+  if (data.type === 'video_new') {
+    var sh = ss.getSheetByName("Videos") || ss.insertSheet("Videos");
+    if (sh.getLastRow() === 0) sh.appendRow(["id","தலைப்பு","லிங்க்","YT ID","வகை ID","செல்போன்","பெயர்","நேரம்","வரிசை"]);
+    var v = data.video;
+    sh.appendRow([v.id, v.title, v.url, v.ytId, v.category, v.phone, v.name, v.ts, v.order]);
+
+  } else if (data.type === 'video_sync') {
+    // Full snapshot rewrite — used for admin edit/delete/reorder so every device converges.
+    // Row order in the sheet = display order, since doGet reads rows top-to-bottom.
+    var sh2 = ss.getSheetByName("Videos") || ss.insertSheet("Videos");
+    sh2.clear();
+    sh2.appendRow(["id","தலைப்பு","லிங்க்","YT ID","வகை ID","செல்போன்","பெயர்","நேரம்","வரிசை"]);
+    var rows = (data.videos || []).map(function(v){ return [v.id, v.title, v.url, v.ytId, v.category, v.phone, v.name, v.ts, v.order]; });
+    if (rows.length) sh2.getRange(2, 1, rows.length, 9).setValues(rows);
+
+  } else if (data.type === 'category_sync') {
+    var sh3 = ss.getSheetByName("Categories") || ss.insertSheet("Categories");
+    sh3.clear();
+    sh3.appendRow(["id","பெயர்"]);
+    var crows = (data.categories || []).map(function(c){ return [c.id, c.name]; });
+    if (crows.length) sh3.getRange(2, 1, crows.length, 2).setValues(crows);
+
+  } else if (data.type === 'admin_sync') {
+    // Stores ALL admin accounts — full snapshot rewrite, one row per admin.
+    var ash = ss.getSheetByName("AdminAuth") || ss.insertSheet("AdminAuth");
+    ash.clear();
+    ash.appendRow(["ஐடி (username)","கடவுச்சொல் (password)"]);
+    var arows = (data.admins || []).map(function(a){ return [a.username, a.password]; });
+    if (arows.length) ash.getRange(2, 1, arows.length, 2).setValues(arows);
+
+  } else if (data.type === 'blocked_sync') {
+    // Full snapshot rewrite of blocked phone numbers.
+    var bsh = ss.getSheetByName("Blocked") || ss.insertSheet("Blocked");
+    bsh.clear();
+    bsh.appendRow(["செல்போன்","காரணம்","தேதி"]);
+    var brows = (data.blocked || []).map(function(b){ return [b.phone, b.reason||'', b.ts||'']; });
+    if (brows.length) bsh.getRange(2, 1, brows.length, 3).setValues(brows);
+
+  } else if (data.type === 'visitor_new') {
+    // One row per login — a running history, so it just appends (no rewrite).
+    var vish = ss.getSheetByName("Visitors") || ss.insertSheet("Visitors");
+    if (vish.getLastRow() === 0) vish.appendRow(["செல்போன்","பெயர்","நேரம்"]);
+    var vi = data.visitor;
+    vish.appendRow([vi.phone, vi.name, vi.ts]);
+  }
+
+  return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+}
+
+function doGet(e) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var result = { ok: true, categories: [], videos: [], admins: [], blocked: [], visitors: [] };
+
+  var csh = ss.getSheetByName("Categories");
+  if (csh && csh.getLastRow() > 1) {
+    csh.getRange(2, 1, csh.getLastRow() - 1, 2).getValues().forEach(function(r){
+      if (r[0]) result.categories.push({ id: r[0], name: r[1] });
+    });
+  }
+  var vsh = ss.getSheetByName("Videos");
+  if (vsh && vsh.getLastRow() > 1) {
+    vsh.getRange(2, 1, vsh.getLastRow() - 1, 9).getValues().forEach(function(r){
+      if (r[0]) result.videos.push({ id:r[0], title:r[1], url:r[2], ytId:r[3], category:r[4], phone:r[5], name:r[6], ts:r[7], order:r[8] });
+    });
+  }
+  var ash = ss.getSheetByName("AdminAuth");
+  if (ash && ash.getLastRow() > 1) {
+    ash.getRange(2, 1, ash.getLastRow() - 1, 2).getValues().forEach(function(r){
+      if (r[0]) result.admins.push({ username: r[0], password: r[1] });
+    });
+  }
+  var bsh = ss.getSheetByName("Blocked");
+  if (bsh && bsh.getLastRow() > 1) {
+    bsh.getRange(2, 1, bsh.getLastRow() - 1, 3).getValues().forEach(function(r){
+      if (r[0]) result.blocked.push({ phone: r[0], reason: r[1], ts: r[2] });
+    });
+  }
+  var vish = ss.getSheetByName("Visitors");
+  if (vish && vish.getLastRow() > 1) {
+    vish.getRange(2, 1, vish.getLastRow() - 1, 3).getValues().forEach(function(r){
+      if (r[0]) result.visitors.push({ phone: r[0], name: r[1], ts: r[2] });
+    });
+  }
+  return ContentService.createTextOutput(JSON.stringify(result)).setMimeType(ContentService.MimeType.JSON);
+}`;
+
+function loadSettingsForm(){
+  document.getElementById('webhookUrl').value = settings.webhook || '';
+  document.getElementById('gsCodeBox').value = GS_CODE;
+  const bs = document.getElementById('builtinStatus');
+  bs.textContent = BUILT_IN_WEBHOOK
+    ? '✅ இந்த கோப்பிலேயே Webhook URL பொறிக்கப்பட்டுள்ளது — எந்த சாதனத்திலும் தனியாக அமைக்கத் தேவையில்லை.'
+    : '⚠️ இன்னும் Webhook URL இந்த கோப்பில் பொறிக்கப்படவில்லை (BUILT_IN_WEBHOOK வெறுமையாக உள்ளது). கீழே உள்ள வழிமுறையை பின்பற்றி ஒரு முறை சேர்க்கவும்.';
+}
+function copyGsCode(){
+  const box = document.getElementById('gsCodeBox');
+  box.select();
+  navigator.clipboard && navigator.clipboard.writeText(GS_CODE).then(()=>toast('Code நகலெடுக்கப்பட்டது ✅')).catch(()=>{
+    document.execCommand('copy'); toast('Code நகலெடுக்கப்பட்டது ✅');
+  });
+}
+function saveWebhook(){
+  settings.webhook = document.getElementById('webhookUrl').value.trim();
+  persistAll();
+  toast('Webhook சேமிக்கப்பட்டது ✅');
+  if(settings.webhook) fetchAllFromSheet();
+}
+function manualSync(){
+  if(!settings.webhook){ toast('முதலில் Webhook URL சேமிக்கவும்'); return; }
+  document.getElementById('syncStatus').textContent = 'Sync செய்கிறது...';
+  fetchAllFromSheet(false, true);
+}
+function pushNewVideoRemote(rec){
+  if(!settings.webhook) return;
+  fetch(settings.webhook, {
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ type:'video_new', video: rec })
+  }).catch(()=>{});
+}
+function pushNewVisitorRemote(rec){
+  if(!settings.webhook) return;
+  fetch(settings.webhook, {
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ type:'visitor_new', visitor: rec })
+  }).catch(()=>{});
+}
+function syncVideosToSheet(){
+  if(!settings.webhook) return;
+  fetch(settings.webhook, {
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ type:'video_sync', videos })
+  }).catch(()=>{});
+}
+function syncCategoriesToSheet(){
+  if(!settings.webhook) return;
+  fetch(settings.webhook, {
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ type:'category_sync', categories })
+  }).catch(()=>{});
+}
+function syncAdminsToSheet(){
+  if(!settings.webhook) return;
+  fetch(settings.webhook, {
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ type:'admin_sync', admins })
+  }).catch(()=>{});
+}
+function syncBlockedToSheet(){
+  if(!settings.webhook) return;
+  fetch(settings.webhook, {
+    method:'POST', mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ type:'blocked_sync', blocked })
+  }).catch(()=>{});
+}
+async function fetchAllFromSheet(silent, manual){
+  if(!settings.webhook) return;
+  try{
+    const res = await fetch(settings.webhook + (settings.webhook.includes('?')?'&':'?') + 't=' + Date.now());
+    const data = await res.json();
+    if(data){
+      if(Array.isArray(data.categories) && data.categories.length) categories = data.categories;
+      if(Array.isArray(data.videos)) videos = data.videos;
+      if(Array.isArray(data.admins) && data.admins.length){
+        admins = data.admins;
+      } else {
+        // Sheet has no AdminAuth rows yet — seed it with the current local admins
+        // so future logins/recoveries from any device can read them back.
+        syncAdminsToSheet();
+      }
+      if(Array.isArray(data.blocked)) blocked = data.blocked;
+      if(Array.isArray(data.visitors)) visitors = data.visitors;
+      persistAll();
+      renderCatBar(); renderGrid();
+      renderPublicVisitCount();
+      enforceBlockCheck();
+      if(document.getElementById('adminContent').style.display!=='none'){
+        renderAdminVideoList(); renderAdminCatList(); renderAdminUploadersList(); renderManualBlockedList(); renderAdminAccountsList(); renderVisitorStats(); renderAdminVisitorsList();
+      }
+      if(manual){ document.getElementById('syncStatus').textContent = '✅ புதுப்பிக்கப்பட்டது — ' + fmtDateTime(Date.now()); }
+    }
+  }catch(err){
+    if(manual) document.getElementById('syncStatus').textContent = '⚠️ Sync தோல்வி — URL சரிபார்க்கவும்';
+  }
+}
+
+/* ================= Export / Import ================= */
+function exportData(){
+  const data = {categories, videos, admins, blocked, visitors, settings, exportedAt: new Date().toISOString()};
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'ntk-reels-backup-'+new Date().toISOString().slice(0,10)+'.json';
+  a.click();
+}
+function importData(e){
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    try{
+      const data = JSON.parse(ev.target.result);
+      if(!confirm('இருக்கும் தரவை மாற்றி இந்த காப்பை ஏற்றவா?')) return;
+      if(Array.isArray(data.categories)) categories = data.categories;
+      if(Array.isArray(data.videos)) videos = data.videos;
+      if(Array.isArray(data.admins) && data.admins.length) admins = data.admins;
+      else if(data.admin) admins = [data.admin]; // backward compat with older single-admin backups
+      if(Array.isArray(data.blocked)) blocked = data.blocked;
+      if(Array.isArray(data.visitors)) visitors = data.visitors;
+      if(data.settings) settings = data.settings;
+      persistAll();
+      renderCatBar(); renderGrid(); renderPublicVisitCount(); renderAdminVideoList(); renderAdminCatList(); renderAdminUploadersList(); renderManualBlockedList(); renderAdminAccountsList(); renderVisitorStats(); renderAdminVisitorsList(); loadSettingsForm();
+      toast('மீட்கப்பட்டது ✅');
+    }catch(err){ toast('கோப்பு படிக்க முடியவில்லை'); }
+    e.target.value='';
+  };
+  reader.readAsText(file);
+}
+
+function renderPublicVisitCount(){
+  const el = document.getElementById('publicVisitCount');
+  if(!el) return;
+  const unique = new Set(visitors.map(v=>v.phone)).size;
+  el.textContent = '👁️ இதுவரை பார்வையிட்டவர்கள்: ' + unique;
+}
+
+/* ================= Init ================= */
+initGate();
+renderCatBar();
+renderGrid();
+renderPublicVisitCount();
+if(settings.webhook){
+  fetchAllFromSheet(true);
+  setInterval(()=>fetchAllFromSheet(true), 25000);
+}
+</script>
+</body>
+</html>
