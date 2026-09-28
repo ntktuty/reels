@@ -146,6 +146,20 @@ input:focus,select:focus{outline:none;border-color:var(--gold);}
 .icon-btn{background:var(--cream-2);border:none;width:32px;height:32px;border-radius:8px;font-size:.85rem;flex-shrink:0;}
 .icon-btn.danger{background:#F7DEDD;color:var(--red-dark);}
 .thumb-mini{width:34px;height:46px;border-radius:6px;object-fit:cover;flex-shrink:0;background:#000;}
+
+/* ===== Desktop / large-screen full-page layout ===== */
+@media(min-width:900px){
+  .topbar{padding:20px 32px 24px;}
+  .topbar-inner,.who,.catbar-wrap,main{max-width:1500px;}
+  .catbar-wrap{padding:16px 32px 0;}
+  .catbar{flex-wrap:wrap;overflow-x:visible;gap:10px;padding:4px 2px 10px;}
+  main{padding:10px 32px 0;}
+  .grid{grid-template-columns:repeat(4,1fr);gap:16px;}
+  .rmeta .t{font-size:.88rem;}
+  .rmeta .u{font-size:.72rem;}
+}
+@media(min-width:1200px){.grid{grid-template-columns:repeat(5,1fr);}}
+@media(min-width:1600px){.grid{grid-template-columns:repeat(6,1fr);}}
 </style>
 </head>
 <body>
