@@ -160,6 +160,12 @@ input:focus,select:focus{outline:none;border-color:var(--gold);}
 }
 @media(min-width:1200px){.grid{grid-template-columns:repeat(5,1fr);}}
 @media(min-width:1600px){.grid{grid-template-columns:repeat(6,1fr);}}
+
+/* ===== Category video counts / admin-only visitor count ===== */
+.chip .cnt{display:inline-block;min-width:20px;margin-left:5px;padding:1px 6px;border-radius:999px;background:var(--cream-2);color:var(--red-dark);font-size:.7rem;font-weight:800;text-align:center;}
+.chip.active .cnt{background:rgba(255,255,255,.22);color:var(--cream);}
+#publicVisitCount.hide{display:none;}
+#publicVisitCount.hide + .switch{margin-left:auto;}
 </style>
 </head>
 <body>
@@ -502,9 +508,10 @@ function switchUser(){
 /* ================= Category bar + grid ================= */
 function renderCatBar(){
   const bar = document.getElementById('catBar');
-  let html = `<button class="chip ${activeCat==='all'?'active':''}" onclick="setActiveCat('all')">அனைத்தும்</button>`;
+  let html = `<button class="chip ${activeCat==='all'?'active':''}" onclick="setActiveCat('all')">அனைத்தும் <span class="cnt">${videos.length}</span></button>`;
   categories.forEach(c=>{
-    html += `<button class="chip ${activeCat===c.id?'active':''}" onclick="setActiveCat('${c.id}')">${esc(c.name)}</button>`;
+    const n = videos.filter(v=>v.category===c.id).length;
+    html += `<button class="chip ${activeCat===c.id?'active':''}" onclick="setActiveCat('${c.id}')">${esc(c.name)} <span class="cnt">${n}</span></button>`;
   });
   bar.innerHTML = html;
 }
@@ -517,6 +524,7 @@ function filteredVideos(){
 }
 
 function renderGrid(){
+  renderCatBar();
   const list = filteredVideos();
   const grid = document.getElementById('grid');
   const empty = document.getElementById('emptyMsg');
@@ -684,6 +692,7 @@ function tryAdminLogin(){
     isAdmin=true; currentAdminUser=u;
     sessionStorage.setItem('ntkr_admin_session','1');
     sessionStorage.setItem('ntkr_admin_username', u);
+    renderPublicVisitCount();
     showAdminContent();
   } else {
     const err=document.getElementById('adminErr'); err.textContent='ஐடி/கடவுச்சொல் தவறு.'; err.style.display='block';
@@ -696,6 +705,7 @@ function showAdminContent(){
 }
 function adminLogout(){
   isAdmin=false; sessionStorage.removeItem('ntkr_admin_session'); sessionStorage.removeItem('ntkr_admin_username');
+  renderPublicVisitCount();
   closeModal('adminModal');
   toast('வெளியேறினீர்கள்');
 }
@@ -1198,6 +1208,7 @@ function renderPublicVisitCount(){
   if(!el) return;
   const unique = new Set(visitors.map(v=>v.phone)).size;
   el.textContent = '👁️ இதுவரை பார்வையிட்டவர்கள்: ' + unique;
+  el.classList.toggle('hide', !isAdmin);
 }
 
 /* ================= Init ================= */
