@@ -121,7 +121,7 @@ input:focus,select:focus{outline:none;border-color:var(--gold);}
 /* ===== Reels player modal ===== */
 .reels-modal{position:fixed;inset:0;background:rgba(10,6,4,.96);z-index:999;display:none;align-items:center;justify-content:center;padding:14px;}
 .reels-modal.open{display:flex;}
-.reels-wrap{position:relative;width:min(92vw,420px);aspect-ratio:9/16;background:#000;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);}
+.reels-wrap{position:relative;width:min(92vw,420px,calc((100vh - 28px)*9/16));width:min(92vw,420px,calc((100dvh - 28px)*9/16));aspect-ratio:9/16;background:#000;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);}
 .reels-wrap #reelsPlayerHost{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;border:0;}
 .reels-swipe{position:absolute;inset:0;z-index:1;background:transparent;touch-action:none;}
 .stat-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;text-align:center;flex:1;min-width:96px;}
@@ -166,6 +166,18 @@ input:focus,select:focus{outline:none;border-color:var(--gold);}
 .chip.active .cnt{background:rgba(255,255,255,.22);color:var(--cream);}
 #publicVisitCount.hide{display:none;}
 #publicVisitCount.hide + .switch{margin-left:auto;}
+
+/* ===== Auto-rotate / full screen support ===== */
+.reels-full{position:absolute;z-index:2;top:10px;right:56px;background:rgba(0,0,0,.55);color:#fff;border:none;width:38px;height:38px;border-radius:50%;font-size:1.1rem;display:flex;align-items:center;justify-content:center;}
+@media (orientation:landscape) and (max-height:600px){
+  .reels-modal{padding:0;}
+  .reels-wrap{width:100vw;height:100vh;height:100dvh;aspect-ratio:auto;border-radius:0;box-shadow:none;}
+}
+@media (orientation:portrait){
+  .reels-modal.force-land{padding:0;}
+  .reels-modal.force-land .reels-wrap{position:fixed;top:50%;left:50%;width:100vh;width:100dvh;height:100vw;aspect-ratio:auto;border-radius:0;transform:translate(-50%,-50%) rotate(90deg);}
+}
+.reels-modal:fullscreen{padding:0;}
 </style>
 </head>
 <body>
@@ -267,6 +279,7 @@ input:focus,select:focus{outline:none;border-color:var(--gold);}
     <div class="reels-swipe" id="reelsSwipe"></div>
     <div class="reels-caption" id="reelsCaption"></div>
     <button class="reels-close" onclick="closeReelsModal()">✕</button>
+    <button class="reels-full" id="reelsFullBtn" onclick="toggleReelsFull()" title="முழுத்திரை / சுழற்று">⛶</button>
     <button class="reels-prev" onclick="reelsNav(-1)">‹</button>
     <button class="reels-next" onclick="reelsNav(1)">›</button>
   </div>
@@ -634,8 +647,35 @@ function playReelsIndex(idx){
   }
 }
 function reelsNav(dir){ playReelsIndex(reelsIdx+dir); }
+/* ===== Full screen + rotate ===== */
+function toggleReelsFull(){
+  const m=document.getElementById('reelsModal');
+  const inFs=document.fullscreenElement||document.webkitFullscreenElement;
+  if(inFs || m.classList.contains('force-land')){
+    m.classList.remove('force-land');
+    try{ (document.exitFullscreen||document.webkitExitFullscreen||function(){}).call(document); }catch(e){}
+    try{ screen.orientation && screen.orientation.unlock && screen.orientation.unlock(); }catch(e){}
+    return;
+  }
+  const req=m.requestFullscreen||m.webkitRequestFullscreen;
+  const fallback=()=>m.classList.add('force-land'); // iOS etc: rotate with CSS
+  if(!req){ fallback(); return; }
+  Promise.resolve(req.call(m)).then(()=>{
+    if(screen.orientation && screen.orientation.lock){
+      screen.orientation.lock('landscape').catch(fallback);
+    } else fallback();
+  }).catch(fallback);
+}
+document.addEventListener('fullscreenchange',()=>{
+  if(!document.fullscreenElement){
+    document.getElementById('reelsModal').classList.remove('force-land');
+    try{ screen.orientation && screen.orientation.unlock && screen.orientation.unlock(); }catch(e){}
+  }
+});
+
 function closeReelsModal(){
-  document.getElementById('reelsModal').classList.remove('open');
+  document.getElementById('reelsModal').classList.remove('open','force-land');
+  try{ if(document.fullscreenElement) document.exitFullscreen(); }catch(e){}
   if(reelsPlayer && typeof reelsPlayer.stopVideo==='function') reelsPlayer.stopVideo();
 }
 (function(){
