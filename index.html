@@ -178,6 +178,13 @@ input:focus,select:focus{outline:none;border-color:var(--gold);}
   .reels-modal.force-land .reels-wrap{position:fixed;top:50%;left:50%;width:100vh;width:100dvh;height:100vw;aspect-ratio:auto;border-radius:0;transform:translate(-50%,-50%) rotate(90deg);}
 }
 .reels-modal:fullscreen{padding:0;}
+/* ===== Category video review (admin) ===== */
+.catvids{display:none;margin:-2px 0 10px;padding:8px;border:1px dashed var(--line);border-radius:12px;background:var(--cream-2);}
+.catvids.open{display:block;}
+.catvids .list-row{margin-bottom:6px;}
+.catvids .none{font-size:.78rem;color:var(--grey);margin:4px 2px;}
+.reels-del{position:absolute;z-index:2;top:10px;left:10px;background:rgba(179,18,23,.92);color:#fff;border:none;height:38px;padding:0 13px;border-radius:19px;font-size:.78rem;font-weight:800;display:none;align-items:center;justify-content:center;}
+.reels-del.show{display:flex;}
 </style>
 </head>
 <body>
@@ -282,6 +289,7 @@ input:focus,select:focus{outline:none;border-color:var(--gold);}
     <button class="reels-full" id="reelsFullBtn" onclick="toggleReelsFull()" title="முழுத்திரை / சுழற்று">⛶</button>
     <button class="reels-prev" onclick="reelsNav(-1)">‹</button>
     <button class="reels-next" onclick="reelsNav(1)">›</button>
+    <button class="reels-del" id="reelsDelBtn" onclick="deleteCurrentReel()">🗑️ நீக்கு</button>
   </div>
 </div>
 
@@ -614,18 +622,19 @@ function submitVideo(){
 }
 
 /* ================= Reels-style player ================= */
-let reelsPlayer=null, reelsQueue=[], reelsIdx=0, ytApiReady=false, pendingReelsOpen=null;
+let reelsPlayer=null, reelsQueue=[], reelsIdx=0, ytApiReady=false, pendingReelsOpen=null, pendingReelsQueue=null;
 function loadYtApi(){
   if(window.YT && window.YT.Player){ ytApiReady=true; return; }
   const tag=document.createElement('script'); tag.src='https://www.youtube.com/iframe_api'; document.body.appendChild(tag);
-  window.onYouTubeIframeAPIReady = function(){ ytApiReady=true; if(pendingReelsOpen!==null){ const idx=pendingReelsOpen; pendingReelsOpen=null; openReelsModal(idx); } };
+  window.onYouTubeIframeAPIReady = function(){ ytApiReady=true; if(pendingReelsOpen!==null){ const idx=pendingReelsOpen, q=pendingReelsQueue; pendingReelsOpen=null; pendingReelsQueue=null; openReelsModal(idx,q); } };
 }
-function openReelsModal(idx){
-  reelsQueue = window.currentReelsQueue || [];
+function openReelsModal(idx, queue){
+  reelsQueue = queue || window.currentReelsQueue || [];
   if(!reelsQueue.length) return;
   reelsIdx = idx;
   document.getElementById('reelsModal').classList.add('open');
-  if(!ytApiReady){ loadYtApi(); pendingReelsOpen=idx; return; }
+  document.getElementById('reelsDelBtn').classList.toggle('show', !!isAdmin);
+  if(!ytApiReady){ loadYtApi(); pendingReelsOpen=idx; pendingReelsQueue=queue||null; return; }
   playReelsIndex(reelsIdx);
 }
 function playReelsIndex(idx){
@@ -645,6 +654,17 @@ function playReelsIndex(idx){
       events:{ onStateChange: e=>{ if(e.data===YT.PlayerState.ENDED) playReelsIndex(reelsIdx+1); } }
     });
   }
+}
+function deleteCurrentReel(){
+  const item = reelsQueue[reelsIdx];
+  if(!item || !isAdmin) return;
+  if(!confirm('இந்த வீடியோவை நீக்கவா?')) return;
+  videos = videos.filter(v=>v.id!==item.id);
+  reelsQueue.splice(reelsIdx,1);
+  persistAll(); renderGrid(); renderCatBar(); renderAdminVideoList(); renderAdminCatList();
+  syncVideosToSheet(); toast('நீக்கப்பட்டது');
+  if(!reelsQueue.length){ closeReelsModal(); return; }
+  playReelsIndex(reelsIdx>=reelsQueue.length ? 0 : reelsIdx);
 }
 function reelsNav(dir){ playReelsIndex(reelsIdx+dir); }
 /* ===== Full screen + rotate ===== */
@@ -795,7 +815,7 @@ function moveVideo(id, dir){
 function deleteVideo(id){
   if(!confirm('இந்த வீடியோவை நீக்கவா?')) return;
   videos = videos.filter(v=>v.id!==id);
-  persistAll(); renderAdminVideoList(); renderGrid();
+  persistAll(); renderAdminVideoList(); renderAdminCatList(); renderCatBar(); renderGrid();
   toast('நீக்கப்பட்டது');
   syncVideosToSheet();
 }
@@ -815,24 +835,48 @@ function editVideo(id){
   const idx = parseInt(pick,10)-1;
   const category = (categories[idx] ? categories[idx].id : v.category);
   v.title = newTitle.trim() || v.title; v.url = newUrl; v.ytId = ytId; v.category = category;
-  persistAll(); renderAdminVideoList(); renderGrid();
+  persistAll(); renderAdminVideoList(); renderAdminCatList(); renderCatBar(); renderGrid();
   toast('புதுப்பிக்கப்பட்டது ✅');
   syncVideosToSheet();
 }
 
+const openCatPanels = new Set();
+function toggleCatVideos(id){ if(openCatPanels.has(id)) openCatPanels.delete(id); else openCatPanels.add(id); renderAdminCatList(); }
+function catVideoList(catId){
+  return videos.filter(v=>v.category===catId).sort((a,b)=>videoOrder(b)-videoOrder(a));
+}
+function previewCatVideo(catId, vid){
+  const q = catVideoList(catId);
+  const i = q.findIndex(v=>v.id===vid);
+  if(i>=0) openReelsModal(i, q);
+}
+function catVideosHtml(catId){
+  const list = catVideoList(catId);
+  if(!list.length) return '<p class="none">இந்த தலைப்பில் வீடியோக்கள் இல்லை.</p>';
+  return list.map(v=>`
+    <div class="list-row">
+      <img class="thumb-mini" src="https://img.youtube.com/vi/${v.ytId}/default.jpg" alt="">
+      <div class="info"><b>${esc(v.title)}</b><span>👤 ${esc(v.name||'—')} · 📱 ${esc(v.phone||'—')}</span></div>
+      <button class="icon-btn" title="பார்க்க" onclick="previewCatVideo('${catId}','${v.id}')">▶️</button>
+      <button class="icon-btn danger" title="நீக்கு" onclick="deleteVideo('${v.id}')">🗑️</button>
+    </div>`).join('');
+}
 function renderAdminCatList(){
   const wrap = document.getElementById('adminCatList');
-  wrap.innerHTML = '<p class="hint" style="margin-bottom:10px;">▲▼ பொத்தான்களால் வரிசையை மாற்றலாம் — இந்த வரிசையிலேயே தலைப்புகள் மேலே காட்சிக்கு வரும்.</p>' + categories.map((c,i)=>{
+  wrap.innerHTML = '<p class="hint" style="margin-bottom:10px;">▲▼ பொத்தான்களால் வரிசையை மாற்றலாம். 🎬 பொத்தானை அழுத்தினால் அந்த தலைப்பின் வீடியோக்களைப் பார்த்து (▶️) நீக்கலாம் (🗑️).</p>' + categories.map((c,i)=>{
     const count = videos.filter(v=>v.category===c.id).length;
+    const open = openCatPanels.has(c.id);
     return `<div class="list-row">
       <div class="info"><b>${esc(c.name)}</b><span>${count} வீடியோக்கள்</span></div>
+      <button class="icon-btn" title="வீடியோக்களைப் பார்க்க" onclick="toggleCatVideos('${c.id}')">${open?'🔼':'🎬'}</button>
       <div style="display:flex;flex-direction:column;gap:3px;flex-shrink:0;">
         <button class="icon-btn" style="height:24px;font-size:.68rem;${i===0?'opacity:.35;':''}" onclick="moveCategory('${c.id}',-1)">▲</button>
         <button class="icon-btn" style="height:24px;font-size:.68rem;${i===categories.length-1?'opacity:.35;':''}" onclick="moveCategory('${c.id}',1)">▼</button>
       </div>
       <button class="icon-btn" onclick="editCategory('${c.id}')">✏️</button>
       <button class="icon-btn danger" onclick="deleteCategory('${c.id}')">🗑️</button>
-    </div>`;
+    </div>
+    <div class="catvids ${open?'open':''}">${open?catVideosHtml(c.id):''}</div>`;
   }).join('');
 }
 function addCategory(){
